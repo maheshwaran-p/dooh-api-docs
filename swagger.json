@@ -1,0 +1,2753 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Login a user.",
+        "description": "This operation authenticates a user, creates a session and returns a user object containing a JWT token.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TooManyRequest"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication & Authorization"
+        ]
+      }
+    },
+    "/device/register": {
+      "post": {
+        "operationId": "DeviceController_registerDevice",
+        "summary": "Register a new device",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDeviceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Device registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterDeviceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/device/check-code": {
+      "get": {
+        "operationId": "DeviceController_validateCode",
+        "summary": "Check the validity of a 6-digit code",
+        "description": "Authenticates a user, creates a session, and returns a user object containing a JWT token",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Code validated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateCodeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Code!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/device": {
+      "get": {
+        "operationId": "DeviceController_getdevices",
+        "summary": "Get the list of devices",
+        "description": "API that sends the list of all active-inactive devices",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of devices retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDevicesResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/device/{id}": {
+      "get": {
+        "operationId": "DeviceController_getdevicesById",
+        "summary": "Get the details of a device",
+        "description": "API to get the details of a device",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the device",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDeviceByIdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Admin can access device details"
+          },
+          "404": {
+            "description": "Invalid Code!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/ad": {
+      "post": {
+        "operationId": "AdController_create",
+        "summary": "Create a new ad",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ad created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ads"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "AdController_get",
+        "summary": "Get all ads",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all ads retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllAdsResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ads"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/ad/{id}": {
+      "patch": {
+        "operationId": "AdController_update",
+        "summary": "Update an ad",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the ad",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ad updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAdByIdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ad Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ads"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "AdController_delete",
+        "summary": "Delete an ad",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the ad",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ad deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAdResDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ad Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ads"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "AdController_getAdById",
+        "summary": "Get ad details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the ad",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ad details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAdByIdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ad Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ads"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/campaign": {
+      "post": {
+        "operationId": "CampaignController_createCampaign",
+        "summary": "Create a new campaign",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCampaignDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Campaign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "CampaignController_getCampaign",
+        "summary": "Get all campaigns",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Campaigns retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignsResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/campaign/validate-mssg/{mssg}": {
+      "get": {
+        "operationId": "CampaignController_validateTriggerMessage",
+        "summary": "Validate a trigger message",
+        "parameters": [
+          {
+            "name": "mssg",
+            "required": true,
+            "in": "path",
+            "description": "The message to validate",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message validated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/campaign/approve/{id}": {
+      "post": {
+        "operationId": "CampaignController_approveCampaign",
+        "summary": "Approve a campaign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the campaign to approve",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign approved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApproveCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Admin can access device details"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/campaign/{id}": {
+      "get": {
+        "operationId": "CampaignController_getCampaignById",
+        "summary": "Get a campaign by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the campaign",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignByIdResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "CampaignController_update",
+        "summary": "Update a campaign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the campaign to update",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CampaignController_delete",
+        "summary": "Delete a campaign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the campaign to delete",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/campaign/metrics/{id}": {
+      "get": {
+        "operationId": "CampaignController_getCampaignMetricsById",
+        "summary": "Get campaign metrics by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the campaign",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign metrics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMetricsResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/bot/search/{uuid}": {
+      "get": {
+        "operationId": "QrController_searchByUUID",
+        "summary": "Search campaign by UUID",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "description": "UUID of the campaign",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchByUUIDResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "QR Code"
+        ]
+      }
+    },
+    "/bot/line/coupon": {
+      "post": {
+        "operationId": "QrController_generateLineQrLink",
+        "summary": "Generate LINE QR link for a coupon",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "LINE QR link generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateQrLinkResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "QR Code"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/bot/browser/coupon/{userId}/{campaignId}": {
+      "get": {
+        "operationId": "QrController_generateBrowserQrLink",
+        "summary": "Generate browser QR link for a coupon",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "campaignId",
+            "required": true,
+            "in": "path",
+            "description": "Campaign ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Browser QR link generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateQrLinkResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ad Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "QR Code"
+        ]
+      }
+    },
+    "/bot/redeem": {
+      "post": {
+        "operationId": "QrController_redeemCampaign",
+        "summary": "Redeem a campaign coupon",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemCoupounDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon redeemed successfully123",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RedeemCampaignResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "QR Code"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/bot/qr-code/{userId}/{campaignId}": {
+      "get": {
+        "operationId": "QrController_generateQrCode",
+        "summary": "Generate QR code",
+        "parameters": [
+          {
+            "name": "campaignId",
+            "required": true,
+            "in": "path",
+            "description": "Campaign ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR code generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateQrLinkResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestExceptionResDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnAuthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedExceptionResDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundExceptionResDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "QR Code"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "DOOH API",
+    "description": "The Digital Out of Home (DOOH) API provides services for devices connected to the network, ad campaigns, and QR code campaigns.",
+    "version": "1.0",
+    "contact": {},
+    "x-logo": {
+      "url": "dooh-logo.png"
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication & Authorization",
+      "description": "This module provides authentication & authorization support for calling the other APIs. First, a call to /login should be made with the proper credentials to obtain a JWT token that can be used in subsequent calls."
+    },
+    {
+      "name": "Devices",
+      "description": "This module provides services for connected devices including registration, validation and listing."
+    },
+    {
+      "name": "Ads",
+      "description": "This module provides services for creating ads. This is currently not used by the DOOH server. Reserved for future use."
+    },
+    {
+      "name": "Campaigns",
+      "description": "This module provides services for creating DOOH ad campaigns. Campaign CRUD operations, approvals, metrics information etc. are supported in this module."
+    },
+    {
+      "name": "QR Code",
+      "description": "This module provides services for all QR code related functionality. This includes generating QR codes for browser and Line based campaigns, and their redemption."
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "access-token": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "LoginUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "The email of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The password of the user"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {}
+      },
+      "Account": {
+        "type": "object",
+        "properties": {}
+      },
+      "UserContext": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "description": "The authenticated user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJcrHU4ySSTRCeu6oK_kV7s9:APA91bGSvRM8sZOngLsKcHiVO8qSP5wywwbtryTTWb4afa-YYBK2T8E4Bsoi06arv78Xh_l_kxurSQDSRWYo_3GY7PxEcZV2R2YkoSsO0jAeqPyRmtpmLA9LsnwecygxNOK_baelgYEJ",
+            "description": "JWT access token"
+          },
+          "capabilities": {
+            "example": [
+              "read",
+              "write",
+              "create_campaign",
+              "read_campaign"
+            ],
+            "description": "Capabilities of the user",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accountId": {
+            "type": "number",
+            "example": 1,
+            "description": "Account ID associated with the user"
+          },
+          "account": {
+            "description": "Account associated with the user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Account"
+              }
+            ]
+          },
+          "managedAccounts": {
+            "example": [
+              1,
+              2,
+              3
+            ],
+            "description": "Managed accounts by the user",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "user",
+          "accessToken",
+          "capabilities",
+          "account"
+        ]
+      },
+      "BadRequestExceptionResDTO": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "exception_type": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "status_code": {
+            "type": "number",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "The request could not be understood by the server due to malformed syntax."
+          },
+          "support": {
+            "type": "string",
+            "example": "Refer to the API documentation for the correct request format :  http://127.0.0.1:5500/docs/index.html#tag/Authentication-and-Authorization"
+          }
+        },
+        "required": [
+          "error",
+          "exception_type",
+          "status_code",
+          "message",
+          "support"
+        ]
+      },
+      "NotFoundExceptionResDTO": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "exception_type": {
+            "type": "string",
+            "example": "Not Found"
+          },
+          "status_code": {
+            "type": "number",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "example": "The requested resource could not be found."
+          },
+          "support": {
+            "type": "string",
+            "example": "Refer to the API documentation for the correct request format :  http://127.0.0.1:5500/docs/index.html#tag/Authentication-and-Authorization"
+          }
+        },
+        "required": [
+          "error",
+          "exception_type",
+          "status_code",
+          "message",
+          "support"
+        ]
+      },
+      "TooManyRequest": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "exception_type": {
+            "type": "string",
+            "example": "Too Many Request"
+          },
+          "status_code": {
+            "type": "number",
+            "example": 429
+          },
+          "message": {
+            "type": "string",
+            "example": "It seems like bot activity. You are temporarily blocked for 30 minutes."
+          },
+          "support": {
+            "type": "string",
+            "example": "Refer to the API documentation for the correct request format :  http://127.0.0.1:5500/docs/index.html#tag/Authentication-and-Authorization"
+          }
+        },
+        "required": [
+          "error",
+          "exception_type",
+          "status_code",
+          "message",
+          "support"
+        ]
+      },
+      "LocationDetails": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "string",
+            "description": "Latitude of the device location",
+            "example": "40.712776"
+          },
+          "long": {
+            "type": "string",
+            "description": "Longitude of the device location",
+            "example": "-74.005974"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the device location",
+            "example": "New York"
+          }
+        },
+        "required": [
+          "lat",
+          "long",
+          "name"
+        ]
+      },
+      "RegisterDeviceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Unique identifier for the device"
+          },
+          "macId": {
+            "type": "string",
+            "description": "MAC address of the device",
+            "example": "00:1B:44:11:3A:B7"
+          },
+          "orientation": {
+            "type": "string",
+            "description": "Orientation of the device",
+            "example": "landscape"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the device",
+            "example": "Device 1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the device",
+            "example": "Main lobby display"
+          },
+          "location": {
+            "description": "Location details of the device",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationDetails"
+              }
+            ]
+          },
+          "code": {
+            "type": "number",
+            "description": "6-digit code for device authentication",
+            "example": 123456
+          },
+          "imageURL": {
+            "type": "string",
+            "description": "URL of the device image",
+            "example": "http://example.com/device-image.png"
+          },
+          "locationName": {
+            "type": "string",
+            "description": "Name of the device location",
+            "example": "Main Lobby"
+          },
+          "cps": {
+            "type": "number",
+            "description": "CPS value of the device",
+            "example": 50
+          }
+        },
+        "required": [
+          "orientation",
+          "location",
+          "code",
+          "imageURL",
+          "locationName",
+          "cps"
+        ]
+      },
+      "RegisterDeviceResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "number",
+            "example": 200
+          },
+          "message": {
+            "type": "string",
+            "example": "Device registered successfully!"
+          }
+        },
+        "required": [
+          "status",
+          "message"
+        ]
+      },
+      "UnauthorizedExceptionResDTO": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "exception_type": {
+            "type": "string",
+            "example": "User unauthorized!"
+          },
+          "status_code": {
+            "type": "number",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "example": "Please provide valid access token, user not authorized"
+          },
+          "support": {
+            "type": "string",
+            "example": "Refer to the API documentation for the correct request format :  http://127.0.0.1:5500/docs/index.html#tag/Authentication-and-Authorization"
+          }
+        },
+        "required": [
+          "error",
+          "exception_type",
+          "status_code",
+          "message",
+          "support"
+        ]
+      },
+      "ValidateCodeResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Valid code"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "Device": {
+        "type": "object",
+        "properties": {}
+      },
+      "GetAllDevicesResponseDto": {
+        "type": "object",
+        "properties": {
+          "devices": {
+            "example": [
+              {
+                "id": 1,
+                "macId": "00:1B:44:11:3A:B7",
+                "name": "Device 1",
+                "description": "This is a description of Device 1",
+                "location": "1234 Main St, Anytown, USA",
+                "cps": 100,
+                "imageURL": "https://example.com/device1.png",
+                "locationName": "Main Office",
+                "orientation": "LANDSCAPE"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Device"
+            }
+          }
+        },
+        "required": [
+          "devices"
+        ]
+      },
+      "GetDeviceByIdResponseDto": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "example": {
+              "id": 1,
+              "macId": "00:1B:44:11:3A:B7",
+              "name": "Device 1",
+              "description": "This is a description of Device 1",
+              "location": "1234 Main St, Anytown, USA",
+              "cps": 100,
+              "imageURL": "https://example.com/device1.png",
+              "locationName": "Main Office",
+              "orientation": "LANDSCAPE"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Device"
+              }
+            ]
+          }
+        },
+        "required": [
+          "device"
+        ]
+      },
+      "CreateAdDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Unique identifier for the ad"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the ad",
+            "example": "http://example.com/ad"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of the ad in seconds",
+            "example": 30
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the ad",
+            "example": "Summer Sale Ad"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Resolution of the ad",
+            "example": "1920x1080"
+          },
+          "createdBy": {
+            "type": "number",
+            "description": "ID of the user who created the ad",
+            "example": 1
+          },
+          "updatedBy": {
+            "type": "number",
+            "description": "ID of the user who last updated the ad",
+            "example": 2
+          },
+          "campaignId": {
+            "type": "number",
+            "description": "ID of the associated campaign",
+            "example": 1
+          },
+          "thumbnail": {
+            "type": "string",
+            "description": "Thumbnail image URL of the ad",
+            "example": "http://example.com/thumbnail.png"
+          },
+          "image": {
+            "type": "string",
+            "description": "Image URL of the ad",
+            "example": "http://example.com/image.png"
+          }
+        },
+        "required": [
+          "url",
+          "duration",
+          "name",
+          "resolution",
+          "createdBy",
+          "updatedBy",
+          "campaignId",
+          "thumbnail"
+        ]
+      },
+      "Ad": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateAdResponseDto": {
+        "type": "object",
+        "properties": {
+          "ad": {
+            "example": {
+              "id": 1,
+              "campaignId": "CMP123456",
+              "duration": 30,
+              "type": "video",
+              "url": "https://example.com/ad.mp4",
+              "resolution": "1920x1080",
+              "thumbnail": "https://example.com/ad-thumbnail.png"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Ad"
+              }
+            ]
+          }
+        },
+        "required": [
+          "ad"
+        ]
+      },
+      "GetAdByIdResponseDto": {
+        "type": "object",
+        "properties": {
+          "ad": {
+            "example": {
+              "id": 1,
+              "campaignId": "CMP123456",
+              "duration": 30,
+              "type": "video",
+              "url": "https://example.com/ad.mp4",
+              "resolution": "1920x1080",
+              "thumbnail": "https://example.com/ad-thumbnail.png"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Ad"
+              }
+            ]
+          }
+        },
+        "required": [
+          "ad"
+        ]
+      },
+      "DeleteAdResDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "AD Deleted successfully!"
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "GetAllAdsResponseDto": {
+        "type": "object",
+        "properties": {
+          "ads": {
+            "example": [
+              {
+                "id": 1,
+                "campaignId": "CMP123456",
+                "duration": 30,
+                "type": "video",
+                "url": "https://example.com/ad.mp4",
+                "resolution": "1920x1080",
+                "thumbnail": "https://example.com/ad-thumbnail.png"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ad"
+            }
+          }
+        },
+        "required": [
+          "ads"
+        ]
+      },
+      "CreateCampaignDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Optional ID of the campaign"
+          },
+          "campaignType": {
+            "type": "string",
+            "enum": [
+              "PROMOTION",
+              "REGULAR"
+            ],
+            "description": "Type of the campaign"
+          },
+          "qrSize": {
+            "type": "string",
+            "enum": [
+              "SMALL",
+              "MEDIUM",
+              "LARGE"
+            ],
+            "description": "Size of the QR code"
+          },
+          "qrPosition": {
+            "type": "string",
+            "enum": [
+              "LEFT",
+              "RIGHT",
+              "CENTER"
+            ],
+            "description": "Position of the QR code"
+          },
+          "adType": {
+            "type": "string",
+            "enum": [
+              "IMAGE",
+              "VIDEO"
+            ],
+            "description": "Type of the ad"
+          },
+          "adUrl": {
+            "type": "string",
+            "description": "URL of the ad"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of the ad"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Resolution of the ad"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the campaign"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the campaign"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Start date of the campaign"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "End date of the campaign"
+          },
+          "timeslots": {
+            "type": "object",
+            "description": "Timeslots for the campaign",
+            "example": [
+              [
+                0,
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "triggerMessageLine": {
+            "type": "string",
+            "description": "Trigger message line"
+          },
+          "availableCoupons": {
+            "type": "number",
+            "description": "Number of available coupons"
+          },
+          "displayBooking": {
+            "description": "Display booking information",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedBy": {
+            "type": "number",
+            "description": "ID of the user who updated the campaign"
+          },
+          "webIntro": {
+            "type": "string",
+            "description": "Web introduction for the campaign"
+          },
+          "webDescription": {
+            "type": "string",
+            "description": "Web description for the campaign"
+          },
+          "webTitle": {
+            "type": "string",
+            "description": "Web title for the campaign"
+          },
+          "qrCampaignType": {
+            "type": "string",
+            "enum": [
+              "LINE",
+              "WHATSAPP",
+              "WEB"
+            ],
+            "description": "Type of the QR campaign"
+          }
+        },
+        "required": [
+          "campaignType",
+          "qrSize",
+          "qrPosition",
+          "adType",
+          "adUrl",
+          "duration",
+          "resolution",
+          "name",
+          "description",
+          "startDate",
+          "endDate",
+          "timeslots",
+          "displayBooking"
+        ]
+      },
+      "Campaign": {
+        "type": "object",
+        "properties": {}
+      },
+      "CampaignDeviceAssociation": {
+        "type": "object",
+        "properties": {}
+      },
+      "QRCampaign": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "campaignContext": {
+            "description": "The created campaign object.",
+            "example": {
+              "id": 1,
+              "name": "New Campaign",
+              "description": "This is a new campaign.",
+              "startDate": "2024-01-01T00:00:00Z",
+              "endDate": "2024-12-31T23:59:59Z",
+              "timeSlots": "08:00-18:00",
+              "budget": 5000,
+              "uuid": "uuid-string",
+              "totalSpend": 2500.5,
+              "impressionsBooked": 10000,
+              "impressionsCounted": 8000,
+              "ads": "Ad content",
+              "campaignType": "REGULAR",
+              "state": "PENDING",
+              "advertiserId": 2,
+              "ad": {
+                "id": 1,
+                "type": "VIDEO",
+                "url": "https://example.com/ad.mp4",
+                "duration": 30,
+                "name": "Sample Ad",
+                "resolution": "1080p",
+                "thumbnail": "https://example.com/ad-thumbnail.png",
+                "campaignId": 1
+              },
+              "qrCampaign": null
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            ]
+          },
+          "adResp": {
+            "description": "The created ad object.",
+            "example": {
+              "id": 1,
+              "type": "VIDEO",
+              "url": "https://example.com/ad.mp4",
+              "duration": 30,
+              "name": "Sample Ad",
+              "resolution": "1080p",
+              "thumbnail": "https://example.com/ad-thumbnail.png",
+              "campaignId": 1
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Ad"
+              }
+            ]
+          },
+          "deviceResp": {
+            "description": "The created campaign-device associations.",
+            "example": [
+              {
+                "id": 1,
+                "deviceId": 1,
+                "campaignId": 1,
+                "impressionsBooked": 1000,
+                "impressionsCounted": 800,
+                "cpsBooked": 100,
+                "spend": 500,
+                "cost": 450
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CampaignDeviceAssociation"
+            }
+          },
+          "qrCampaignContext": {
+            "description": "The created QR campaign object, if applicable.",
+            "example": {
+              "id": 1,
+              "campaignId": 1,
+              "totalCoupons": 1000,
+              "scannedCoupons": 500,
+              "redeemedCoupons": 250,
+              "triggerMessage": "Scan to redeem your coupon!",
+              "size": "Large",
+              "webTitle": "QR Campaign Web Title",
+              "webIntro": "Introduction to the QR Campaign",
+              "webDescription": "Detailed description of the QR Campaign",
+              "type": "LINE",
+              "position": "CENTER"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QRCampaign"
+              }
+            ]
+          }
+        },
+        "required": [
+          "campaignContext",
+          "adResp",
+          "deviceResp"
+        ]
+      },
+      "ValidateCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "example": false,
+            "description": "Indicates whether the campaign validation passed or failed."
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid campaign ID provided.",
+            "description": "Message explaining the validation result."
+          }
+        },
+        "required": [
+          "valid"
+        ]
+      },
+      "ApproveCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "campaign": {
+            "description": "The approved campaign object.",
+            "example": {
+              "id": 1,
+              "name": "Approved Campaign",
+              "description": "This campaign has been approved.",
+              "startDate": "2024-01-01T00:00:00Z",
+              "endDate": "2024-12-31T23:59:59Z",
+              "timeSlots": "08:00-18:00",
+              "budget": 5000,
+              "uuid": "uuid-string",
+              "totalSpend": 2500.5,
+              "impressionsBooked": 10000,
+              "impressionsCounted": 8000,
+              "ads": "Ad content",
+              "campaignType": "PROMOTION",
+              "state": "APPROVED",
+              "advertiserId": 2,
+              "ad": {
+                "id": 1,
+                "type": "VIDEO",
+                "url": "https://example.com/ad.mp4",
+                "duration": 30,
+                "name": "Sample Ad",
+                "resolution": "1080p",
+                "thumbnail": "https://example.com/ad-thumbnail.png",
+                "campaignId": 1
+              },
+              "qrCampaign": null
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            ]
+          }
+        },
+        "required": [
+          "campaign"
+        ]
+      },
+      "GetCampaignsResponseDTO": {
+        "type": "object",
+        "properties": {
+          "campaigns": {
+            "description": "List of campaigns for the user.",
+            "example": [
+              {
+                "id": 1,
+                "name": "Campaign 1",
+                "description": "Description for campaign 1",
+                "startDate": "2024-01-01T00:00:00Z",
+                "endDate": "2024-12-31T23:59:59Z",
+                "timeSlots": "08:00-18:00",
+                "budget": 5000,
+                "uuid": "uuid-string",
+                "totalSpend": 2500.5,
+                "impressionsBooked": 10000,
+                "impressionsCounted": 8000,
+                "ads": "Ad content",
+                "campaignType": "REGULAR",
+                "state": "PENDING",
+                "advertiserId": 2,
+                "ad": {
+                  "id": 1,
+                  "type": "VIDEO",
+                  "url": "https://example.com/ad.mp4",
+                  "duration": 30,
+                  "name": "Sample Ad",
+                  "resolution": "1080p",
+                  "thumbnail": "https://example.com/ad-thumbnail.png",
+                  "campaignId": 1
+                },
+                "qrCampaign": null
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Campaign"
+            }
+          }
+        },
+        "required": [
+          "campaigns"
+        ]
+      },
+      "GetCampaignByIdResponseDTO": {
+        "type": "object",
+        "properties": {
+          "campaign": {
+            "description": "Detailed campaign information.",
+            "example": {
+              "id": 1,
+              "name": "Sample Campaign",
+              "description": "This is a sample campaign.",
+              "startDate": "2024-01-01T00:00:00Z",
+              "endDate": "2024-12-31T23:59:59Z",
+              "timeSlots": "08:00-18:00",
+              "budget": 5000,
+              "uuid": "uuid-string",
+              "totalSpend": 2500.5,
+              "impressionsBooked": 10000,
+              "impressionsCounted": 8000,
+              "ads": "Ad content",
+              "campaignType": "REGULAR",
+              "state": "PENDING",
+              "advertiserId": 2,
+              "ad": {
+                "id": 1,
+                "type": "VIDEO",
+                "url": "https://example.com/ad.mp4",
+                "duration": 30,
+                "name": "Sample Ad",
+                "resolution": "1080p",
+                "thumbnail": "https://example.com/ad-thumbnail.png",
+                "campaignId": 1
+              },
+              "qrCampaign": null
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            ]
+          },
+          "ad": {
+            "description": "Associated ad details.",
+            "example": {
+              "id": 1,
+              "type": "VIDEO",
+              "url": "https://example.com/ad.mp4",
+              "duration": 30,
+              "name": "Sample Ad",
+              "resolution": "1080p",
+              "thumbnail": "https://example.com/ad-thumbnail.png",
+              "campaignId": 1
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Ad"
+              }
+            ]
+          },
+          "deviceAssociations": {
+            "description": "List of campaign-device associations.",
+            "example": [
+              {
+                "id": 1,
+                "deviceId": 1,
+                "campaignId": 1,
+                "impressionsBooked": 1000,
+                "impressionsCounted": 800,
+                "cpsBooked": 100,
+                "spend": 500,
+                "cost": 450
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CampaignDeviceAssociation"
+            }
+          }
+        },
+        "required": [
+          "campaign",
+          "ad",
+          "deviceAssociations"
+        ]
+      },
+      "GetCampaignMetricsResponseDTO": {
+        "type": "object",
+        "properties": {
+          "devices": {
+            "description": "The created campaign-device associations.",
+            "example": [
+              {
+                "id": 1,
+                "deviceId": 1,
+                "campaignId": 1,
+                "impressionsBooked": 1000,
+                "impressionsCounted": 800,
+                "cpsBooked": 100,
+                "spend": 500,
+                "cost": 450
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CampaignDeviceAssociation"
+            }
+          },
+          "qrCampaign": {
+            "description": "The created QR campaign object, if applicable.",
+            "example": {
+              "id": 1,
+              "campaignId": 1,
+              "totalCoupons": 1000,
+              "scannedCoupons": 500,
+              "redeemedCoupons": 250,
+              "triggerMessage": "Scan to redeem your coupon!",
+              "size": "Large",
+              "webTitle": "QR Campaign Web Title",
+              "webIntro": "Introduction to the QR Campaign",
+              "webDescription": "Detailed description of the QR Campaign",
+              "type": "LINE",
+              "position": "CENTER"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QRCampaign"
+              }
+            ]
+          }
+        },
+        "required": [
+          "devices"
+        ]
+      },
+      "UpdateCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "campaign": {
+            "description": "The updated campaign object.",
+            "example": {
+              "id": 1,
+              "name": "Updated Campaign",
+              "description": "This is an updated campaign description.",
+              "startDate": "2024-01-01T00:00:00Z",
+              "endDate": "2024-12-31T23:59:59Z",
+              "timeSlots": "08:00-18:00",
+              "budget": 5000,
+              "uuid": "uuid-string",
+              "totalSpend": 2500.5,
+              "impressionsBooked": 10000,
+              "impressionsCounted": 8000,
+              "ads": "Ad content",
+              "campaignType": "PROMOTION",
+              "state": "APPROVED",
+              "advertiserId": 2,
+              "ad": {
+                "id": 1,
+                "type": "VIDEO",
+                "url": "https://example.com/ad.mp4",
+                "duration": 30,
+                "name": "Sample Ad",
+                "resolution": "1080p",
+                "thumbnail": "https://example.com/ad-thumbnail.png",
+                "campaignId": 1
+              },
+              "qrCampaign": null
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Campaign"
+              }
+            ]
+          }
+        },
+        "required": [
+          "campaign"
+        ]
+      },
+      "DeleteCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates whether the campaign was successfully deleted."
+          },
+          "message": {
+            "type": "string",
+            "example": "Campaign deleted successfully.",
+            "description": "Message confirming the deletion."
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "SearchByUUIDResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "QR Campaign ID"
+          },
+          "campaignId": {
+            "type": "number",
+            "example": 1,
+            "description": "Campaign ID"
+          },
+          "totalCoupons": {
+            "type": "number",
+            "example": 100,
+            "description": "Total Coupons"
+          },
+          "scannedCoupons": {
+            "type": "number",
+            "example": 10,
+            "description": "Scanned Coupons"
+          },
+          "redeemedCoupons": {
+            "type": "number",
+            "example": 5,
+            "description": "Redeemed Coupons"
+          },
+          "triggerMessage": {
+            "type": "string",
+            "example": "Scan this QR code to get a discount",
+            "description": "Trigger Message"
+          },
+          "size": {
+            "type": "string",
+            "example": "300x300",
+            "description": "QR Code Size"
+          },
+          "webTitle": {
+            "type": "string",
+            "example": "Special Offer",
+            "description": "Web Title"
+          },
+          "webIntro": {
+            "type": "string",
+            "example": "Welcome to our special offer",
+            "description": "Web Intro"
+          },
+          "webDescription": {
+            "type": "string",
+            "example": "This is a limited-time offer.",
+            "description": "Web Description"
+          },
+          "type": {
+            "type": "string",
+            "example": "LINE",
+            "enum": [
+              "LINE",
+              "WHATSAPP",
+              "WEB"
+            ],
+            "description": "QR Campaign Type"
+          },
+          "position": {
+            "type": "string",
+            "example": "CENTER",
+            "enum": [
+              "LEFT",
+              "RIGHT",
+              "CENTER"
+            ],
+            "description": "QR Position"
+          }
+        },
+        "required": [
+          "id",
+          "campaignId",
+          "totalCoupons",
+          "scannedCoupons",
+          "redeemedCoupons",
+          "triggerMessage",
+          "size",
+          "webTitle",
+          "webIntro",
+          "webDescription",
+          "type",
+          "position"
+        ]
+      },
+      "GenerateQrLinkResponseDTO": {
+        "type": "object",
+        "properties": {
+          "qrImgUrl": {
+            "type": "string",
+            "example": "https://example.com/bot/qr-code/${userId}/${campaignId}",
+            "description": "QR code image URL"
+          }
+        },
+        "required": [
+          "qrImgUrl"
+        ]
+      },
+      "RedeemCoupounDTO": {
+        "type": "object",
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "description": "ID of the campaign"
+          },
+          "custId": {
+            "type": "string",
+            "description": "ID of the customer"
+          }
+        },
+        "required": [
+          "campaignId",
+          "custId"
+        ]
+      },
+      "RedeemCampaignResponseDTO": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Coupon redeemed successfully",
+            "description": "Redemption message"
+          },
+          "coupon": {
+            "description": "Redeemed coupon details",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RedeemCoupounDTO"
+              }
+            ]
+          }
+        },
+        "required": [
+          "message",
+          "coupon"
+        ]
+      }
+    }
+  }
+}
